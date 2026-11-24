@@ -16,14 +16,29 @@ WORD = "Buffering"
 OUTPUT_PATH = os.environ.get("ENTRY_OUTPUT", "/output/entry.txt")
 
 
-def validate(word: str) -> None:
-    """Gate: exactly one word, 1-20 characters, not only whitespace."""
+def check_not_blank(word: str) -> None:
+    """Rule 1: the word must not be empty or only whitespace."""
     if not word or word != word.strip():
         raise ValueError("word must not be empty or only whitespace")
+
+
+def check_single_word(word: str) -> None:
+    """Rule 2: the entry must be exactly one word (no spaces)."""
     if any(ch.isspace() for ch in word):
         raise ValueError("entry must be a single word (no spaces)")
+
+
+def check_length(word: str) -> None:
+    """Rule 3: the word must be 1-20 characters long."""
     if not 1 <= len(word) <= 20:
         raise ValueError("word must be 1-20 characters long")
+
+
+def validate(word: str) -> None:
+    """Gate: exactly one word, 1-20 characters, not only whitespace."""
+    check_not_blank(word)
+    check_single_word(word)
+    check_length(word)
 
 
 def main() -> int:
